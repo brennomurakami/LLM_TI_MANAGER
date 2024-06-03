@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Custom CSS File -->
+    <link rel="stylesheet" href="../static/styles/index.css">
+
+    <!-- Title -->
+    <title>Chat GPT 2.0</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Google Fonts link for Icon -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+</head>
+
+<body>
+    <span class="material-symbols-outlined" id="toggle-btn">chevron_right</span>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-content" id="sidebar-content">
+            <p style="text-align: center;">Chats</p>
+            <br>
+
+            <button id="novo-chat" class="novo-chat" onclick="criarCard()">Novo chat</button>
+
+            <div class="chats" id="chats"></div>
+
+            <div class="user-controls" id="user-controls">
+                <p>Brenno Murakami</p>
+                <button id="sair-btn" class="sair-btn">Sair</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <input type="text" id="novo-nome-input" placeholder="Digite o novo nome">
+            <button id="confirmar-btn">Confirmar</button>
+        </div>
+    </div>
+
+   <div class="chat-container" id="chat-container">
+    <br>
+    <br>
+   </div>
+
+   <div id="central-content" class="central-content">
+        <img src="static/images/logo.png">
+        <h2>UCBvet</h2>
+        <h4>Copiloto de Vendas</h4>
+        <p>Faça uma pergunta para começar!</p>
+    </div>
+
+   <div class="typing-container">
+        <div class="typing-content">
+            <div class="typing-textarea">
+                <textarea name="" id="chat-input" spellcheck="false" placeholder="Digite sua pergunta..."></textarea>
+                <span id="send-btn" class="material-symbols-rounded">send</span>
+            </div>
+            <div class="typing-controls">
+                <span id="theme-btn" class="material-symbols-rounded" onclick="toggleTheme()" >light_mode</span>
+                <div class="file-container">
+                    <input type="file" id="file-input" name="file" accept=".pdf, .doc, .docx, .csv" style="display: none;">
+                    <span id="file-span" class="material-symbols-outlined" style="cursor: pointer;">attach_file</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../static/scripts/index.js" defer></script>
+</body>
+
+</html>
