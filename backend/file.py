@@ -77,10 +77,14 @@ def verificar_e_atualizar_indice(files, file_extension):
     return vector_store
 
 def procurar_similaridade(query):
-    query_embedding = embeddings.embed_query(query)
+    print('QUERY:', query)
     # Verificar e atualizar o índice
     vector_store = carregar_indices_faiss()
+    print("Vector store carregado")
     # Realiza a busca de similaridade
-    resultados = vector_store.similarity_search(query_embedding, k=3)
+    resultados = vector_store.similarity_search(query=query, k=3)
+    print("RESULTADOS OBTIDOS")
+    print(resultados)
     textos_resultados = [limpar_texto(doc.page_content) for doc in resultados]
+    textos_resultados = ''.join(textos_resultados)
     return textos_resultados

@@ -84,14 +84,14 @@ body{
     text-align: center;
 }
 
-
 .central-content{
     text-align: center;
 }
 
 .central-content img{
-    width: 130px; /* Defina a largura desejada */
+    width: 200px; /* Defina a largura desejada */
     height: auto;
+    padding-bottom: 0;
 }
 
 #card-op span{
