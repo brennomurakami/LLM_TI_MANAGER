@@ -284,12 +284,12 @@ async function criarCard() {
     let nomeCard = 'Novo chat';
     console.log("entrou")
     // Envia o nome do card para o servidor Flask e obtém o ID gerado
-    fetch('/salvar-card', {
+    fetch('/add_chat', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({nome_card: nomeCard })
+        body: JSON.stringify({title: nomeCard })
     })
     .then(response => {
         if (!response.ok) {
