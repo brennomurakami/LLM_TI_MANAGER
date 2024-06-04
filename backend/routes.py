@@ -122,8 +122,9 @@ def salvar_card():
     data = request.json
     nome_card = data.get('nome_card')
     thread = client.beta.threads.create()
+    idconta = current_user.idconta
     # Crie um novo card no banco de dados
-    novo_card = Conversa(nome_conversa = nome_card, thread = thread.id)
+    novo_card = Conversa(nome_conversa = nome_card, thread = thread.id, idconta = idconta)
     db.session.add(novo_card)
     db.session.commit()
 
@@ -133,7 +134,7 @@ def salvar_card():
 @index_routes.route('/cards', methods=['GET'])
 @login_required
 def get_cards():
-    cards = Conversa.query.all()  # Consulta todos os cards do banco de dados
+    cards = Conversa.query.filter_by(idconta = current_user.idconta)
     print("cards")
     print(cards)
     cards_data = [{'idconversa': card.idconversa, 'nome_conversa': card.nome_conversa} for card in cards]  # Formata os dados dos cards
