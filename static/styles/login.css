@@ -49,9 +49,8 @@
   }
   
   #login-logo {
-    width: 100px; /* Ajuste conforme necessário */
+    width: 180px; /* Ajuste conforme necessário */
     height: auto; /* Ajuste conforme necessário */
-    margin-bottom: 20px;
   }
   
   #login-form {

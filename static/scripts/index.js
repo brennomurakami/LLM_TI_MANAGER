@@ -96,7 +96,7 @@ async function handleUserMessage(event) {
 
         })
         .catch(error => console.error('Erro ao enviar pergunta:', error));
-        }, 500);
+        }, 800);
 
         userInput.value = '';
     }

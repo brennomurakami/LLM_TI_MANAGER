@@ -62,7 +62,7 @@ def logout():
 def home():
     nome_usuario = current_user.usuario   # Aqui, current_user é uma variável fornecida pelo Flask-Login
     print("nome:",nome_usuario)
-    return render_template('index.html')
+    return render_template('index.html', username=nome_usuario)
 
 @index_routes.route('/')
 def index():
