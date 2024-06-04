@@ -247,3 +247,16 @@ def upload_arquivo():
         return 'Arquivo enviado com sucesso.', 200
     else:
         return 'Tipo de arquivo não permitido.', 400
+    
+@index_routes.route('/process-bot-message', methods=['POST'])
+def process_bot_message():
+    data = request.get_json()
+    bot_message = data.get('message')
+    
+    if bot_message:
+        print(f"Mensagem do bot recebida: {bot_message}")
+        criar_pdf(bot_message, 'outputs')
+
+        return jsonify({"status": "success", "message": "Mensagem processada com sucesso"})
+    else:
+        return jsonify({"status": "error", "message": "Nenhuma mensagem fornecida"}), 400

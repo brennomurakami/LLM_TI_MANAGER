@@ -239,6 +239,16 @@ body{
     color: var(--message-color);
 }
 
+.bot-message code{
+    margin: 17px;
+    color: var(--message-color);
+}
+
+.bot-message pre{
+    margin: 17px;
+    color: var(--message-color);
+}
+
 .chat-container{
     overflow-y: auto;
     max-height: 100vh;

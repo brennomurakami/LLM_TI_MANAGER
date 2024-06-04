@@ -7,6 +7,10 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import docx
 from langchain.docstore.document import Document
 from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Preformatted
+from reportlab.lib.styles import getSampleStyleSheet
+from bs4 import BeautifulSoup
 
 load_dotenv()
 
@@ -88,3 +92,44 @@ def procurar_similaridade(query):
     textos_resultados = [limpar_texto(doc.page_content) for doc in resultados]
     textos_resultados = ''.join(textos_resultados)
     return textos_resultados
+
+# Função para criar um PDF com a resposta da API
+def criar_pdf(resposta_da_api, diretorio):
+
+    resposta_da_api = remove_html_tags(resposta_da_api)
+    print(resposta_da_api)
+    if len(resposta_da_api) >= 10:
+            nome_do_arquivo = resposta_da_api[:10] + '.pdf'
+    else:
+            nome_do_arquivo = resposta_da_api + '.pdf'
+    
+    print(nome_do_arquivo)
+
+    if diretorio:
+        # Verifica se o caminho é absoluto ou relativo
+        if not os.path.isabs(diretorio):
+            # Converte o caminho relativo para absoluto
+            diretorio = os.path.join(os.getcwd(), diretorio)
+        caminho_completo = os.path.join(diretorio, nome_do_arquivo)
+    else:
+        caminho_completo = nome_do_arquivo
+    
+    # Cria o diretório se não existir
+    if diretorio and not os.path.exists(diretorio):
+        os.makedirs(diretorio)
+    
+    # Inicia um novo documento PDF
+    doc = SimpleDocTemplate(caminho_completo, pagesize=letter)
+    styles = getSampleStyleSheet()
+    flowables = []
+
+     # Adiciona a resposta da API ao PDF como um bloco preformatado
+    preformatted_text = Preformatted(resposta_da_api, styles['Normal'])
+    flowables.append(preformatted_text)
+    
+    # Salva o PDF
+    doc.build(flowables)
+
+def remove_html_tags(text):
+    soup = BeautifulSoup(text, "html.parser")
+    return soup.get_text()

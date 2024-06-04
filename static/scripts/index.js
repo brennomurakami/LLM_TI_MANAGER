@@ -12,11 +12,50 @@ function addUserMessage(message) {
 
 // Função para adicionar mensagem da IA à interface
 function addBotMessage(message) {
-    const botMessageDiv = document.createElement('div');
-    botMessageDiv.className = 'message bot-message';
-    botMessageDiv.innerHTML = message;
+    const botMessageDiv = document.createElement('div')
+    botMessageDiv.className = 'message bot-message'
+    botMessageDiv.innerHTML = message
+    // Cria o elemento span clicável
+    const clickableSpan = document.createElement('span')
+    clickableSpan.className = 'material-symbols-outlined'
+    clickableSpan.innerHTML = 'download'
+    clickableSpan.style.color = 'white'
+    clickableSpan.style.cursor = 'pointer'
+    clickableSpan.style.fontSize = '35px'
+    clickableSpan.style.marginLeft = '0'
+
+    // Adiciona um data attribute ao span com a mensagem do bot
+    clickableSpan.setAttribute('data-message', message)
+
+    // Adiciona um evento de clique ao span
+    clickableSpan.addEventListener('click', function() {
+        const botMessage = this.getAttribute('data-message');
+        // Envia a mensagem do bot para o backend
+        fetch('/process-bot-message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: botMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Mensagem do bot enviada com sucesso: ' + botMessage);
+            // Adicione aqui o que você quer que aconteça quando a mensagem for enviada
+        })
+        .catch(error => {
+            console.error('Erro ao enviar a mensagem do bot:', error);
+        });
+    });
+
+    // Adiciona o span ao div da mensagem do bot
+    botMessageDiv.appendChild(document.createElement('br')); // Adiciona uma quebra de linha
+    botMessageDiv.appendChild(clickableSpan);
+
+    // Adiciona o div da mensagem do bot ao contêiner de chat
     chatContainer.appendChild(botMessageDiv);
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
 
