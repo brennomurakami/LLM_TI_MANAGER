@@ -6,7 +6,7 @@ db = SQLAlchemy()
 class Conta(db.Model, UserMixin):
     idconta = db.Column(db.Integer, primary_key=True, autoincrement=True)
     usuario = db.Column(db.String(45), nullable=False)
-    senha = db.Column(db.String(45), nullable=False)
+    senha = db.Column(db.String(100), nullable=False)
 
     # Flask-Login requires the following methods and properties:
     @property

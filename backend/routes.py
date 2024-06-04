@@ -6,6 +6,7 @@ from backend.file import verificar_e_atualizar_indice
 from io import BytesIO
 from backend.database.modelos import db, Conta, Conversa, HistoricoConversa
 from flask_login import login_user, login_required, logout_user, current_user
+import bcrypt
 
 index_routes = Blueprint('index_routes', __name__)
 
@@ -13,12 +14,12 @@ index_routes = Blueprint('index_routes', __name__)
 def login():
     dados = request.get_json()
     nome_usuario = dados.get('username')
-    senha = dados.get('password')
+    senha = dados.get('password').encode('utf-8')
     print("QUERY NÃO FEITA")
     # Consulta ao banco de dados para verificar se o usuário e a senha estão corretos
-    usuario = Conta.query.filter_by(usuario=nome_usuario, senha=senha).first()
+    usuario = Conta.query.filter_by(usuario=nome_usuario).first()
     print("QUERY FEITA")
-    if usuario:
+    if usuario and bcrypt.checkpw(senha, usuario.senha.encode('utf-8')):
         print(usuario.usuario)
         print(usuario.senha)
         login_user(usuario)
@@ -31,7 +32,7 @@ def login():
 def cadastrar():
     dados = request.get_json()
     nome_usuario = dados.get('username')
-    senha = dados.get('password')
+    senha = dados.get('password').encode('utf-8')
 
     usuario = Conta.query.filter_by(usuario=nome_usuario).first()
 
@@ -39,7 +40,8 @@ def cadastrar():
         return jsonify({'erro': 'Nome de usuário já existe!'}), 400
 
     # Insere o novo usuário no banco de dados
-    novo_usuario = Conta(usuario=nome_usuario, senha=senha)
+    hashed_senha = bcrypt.hashpw(senha, bcrypt.gensalt())
+    novo_usuario = Conta(usuario=nome_usuario, senha=hashed_senha.decode('utf-8'))
     db.session.add(novo_usuario)
     db.session.commit()
 
