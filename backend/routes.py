@@ -5,12 +5,66 @@ from backend.file import *
 from backend.file import verificar_e_atualizar_indice
 from io import BytesIO
 from backend.database.modelos import db, Conta, Conversa, HistoricoConversa
+from flask_login import login_user, login_required, logout_user, current_user
 
 index_routes = Blueprint('index_routes', __name__)
 
+@index_routes.route('/login', methods=['POST'])
+def login():
+    dados = request.get_json()
+    nome_usuario = dados.get('username')
+    senha = dados.get('password')
+    print("QUERY NÃO FEITA")
+    # Consulta ao banco de dados para verificar se o usuário e a senha estão corretos
+    usuario = Conta.query.filter_by(usuario=nome_usuario, senha=senha).first()
+    print("QUERY FEITA")
+    if usuario:
+        print(usuario.usuario)
+        print(usuario.senha)
+        login_user(usuario)
+        return jsonify({'mensagem': 'Login realizado com sucesso!'})
+    else:
+        return jsonify({'mensagem': 'Nome de usuário ou senha incorretos!'}), 401
+    
+# Rota para cadastrar um usuário
+@index_routes.route('/cadastrar', methods=['POST'])
+def cadastrar():
+    dados = request.get_json()
+    nome_usuario = dados.get('username')
+    senha = dados.get('password')
+
+    usuario = Conta.query.filter_by(usuario=nome_usuario).first()
+
+    if usuario:
+        return jsonify({'erro': 'Nome de usuário já existe!'}), 400
+
+    # Insere o novo usuário no banco de dados
+    novo_usuario = Conta(usuario=nome_usuario, senha=senha)
+    db.session.add(novo_usuario)
+    db.session.commit()
+
+    return jsonify({'mensagem': 'Usuário cadastrado com sucesso!'})
+
+@index_routes.route('/cadastro')
+def cadastro():
+    return render_template('signup.html')
+
+@index_routes.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return render_template('login.html')
+
+@index_routes.route('/home')
+@login_required
+def home():
+    nome_usuario = current_user.usuario   # Aqui, current_user é uma variável fornecida pelo Flask-Login
+    print("nome:",nome_usuario)
+    return render_template('index.html')
+
 @index_routes.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
 
 @index_routes.route('/gerar-resposta', methods=['POST'])
 def gerar_resposta():
@@ -61,6 +115,7 @@ def gerar_resposta():
     return jsonify({'resposta': resposta})
 
 @index_routes.route('/salvar-card', methods=['POST'])
+@login_required
 def salvar_card():
     data = request.json
     nome_card = data.get('nome_card')
@@ -74,6 +129,7 @@ def salvar_card():
     return jsonify({'id_card': novo_card.idconversa}), 200
 
 @index_routes.route('/cards', methods=['GET'])
+@login_required
 def get_cards():
     cards = Conversa.query.all()  # Consulta todos os cards do banco de dados
     print("cards")
@@ -82,6 +138,7 @@ def get_cards():
     return jsonify(cards_data)  # Retorna os dados dos cards como JSON
 
 @index_routes.route('/deletar-card', methods=['POST'])
+@login_required
 def deletar_card():
     data = request.json
     card_id = data['card_id']

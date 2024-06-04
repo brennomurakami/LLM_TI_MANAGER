@@ -1,11 +1,28 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 
-class Conta(db.Model):
+class Conta(db.Model, UserMixin):
     idconta = db.Column(db.Integer, primary_key=True, autoincrement=True)
     usuario = db.Column(db.String(45), nullable=False)
     senha = db.Column(db.String(45), nullable=False)
+
+    # Flask-Login requires the following methods and properties:
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.idconta)
 
 class Conversa(db.Model):
     idconversa = db.Column(db.Integer, primary_key=True, autoincrement=True)

@@ -428,3 +428,20 @@ document.getElementById('file-input').addEventListener('change', function(event)
         console.error('Erro:', error);
     });
 });
+
+document.getElementById("sair-btn").addEventListener("click", async function () {
+    try {
+      const response = await fetch("/logout", {
+        method: "GET",
+      });
+  
+      if (response.ok) {
+        // Redireciona o usuário para a página de login ou outra página de sua escolha
+        window.location.href = "/";  // Redireciona para a página de login
+      } else {
+        console.error("Erro ao fazer logout:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
+  });
