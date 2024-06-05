@@ -19,7 +19,9 @@
 
     <!-- Google Fonts link for Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -74,6 +76,10 @@
                 <div class="file-container">
                     <input type="file" id="file-input" name="file" accept=".pdf, .doc, .docx, .csv, .txt" style="display: none;">
                     <span id="file-span" class="material-symbols-outlined" style="cursor: pointer;">attach_file</span>
+                    <div id="menu" class="menu">
+                        <a href="#" id="option1">Anexar — Base de dados</a>
+                        <a href="#" id="option2">Anexar — Pergunte ao chat</a>
+                    </div>
                 </div>
             </div>
         </div>

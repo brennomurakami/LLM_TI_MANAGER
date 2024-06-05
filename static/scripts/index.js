@@ -18,11 +18,12 @@ function addBotMessage(message) {
     // Cria o elemento span clicável
     const clickableSpan = document.createElement('span')
     clickableSpan.className = 'material-symbols-outlined'
-    clickableSpan.innerHTML = 'download'
+    clickableSpan.innerHTML = 'export_notes'
     clickableSpan.style.color = 'white'
     clickableSpan.style.cursor = 'pointer'
-    clickableSpan.style.fontSize = '35px'
-    clickableSpan.style.marginLeft = '0'
+    clickableSpan.style.fontSize = '30px'
+    clickableSpan.style.marginLeft = '10px'
+    clickableSpan.style.marginBottom = '5px'
 
     // Adiciona um data attribute ao span com a mensagem do bot
     clickableSpan.setAttribute('data-message', message)
@@ -31,21 +32,29 @@ function addBotMessage(message) {
     clickableSpan.addEventListener('click', function() {
         const botMessage = this.getAttribute('data-message');
         // Envia a mensagem do bot para o backend
-        fetch('/process-bot-message', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message: botMessage })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('Mensagem do bot enviada com sucesso: ' + botMessage);
-            // Adicione aqui o que você quer que aconteça quando a mensagem for enviada
-        })
-        .catch(error => {
-            console.error('Erro ao enviar a mensagem do bot:', error);
-        });
+        // fetch('/process-bot-message', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ message: botMessage })
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     alert('Mensagem do bot enviada com sucesso: ' + botMessage);
+        //     // Adicione aqui o que você quer que aconteça quando a mensagem for enviada
+        // })
+        // .catch(error => {
+        //     console.error('Erro ao enviar a mensagem do bot:', error);
+        // });
+        var opt = {
+            margin: 1,
+            filename: "download.pdf",
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+          };
+      
+          html2pdf().set(opt).from(botMessage).save();
     });
 
     // Adiciona o span ao div da mensagem do bot
@@ -167,6 +176,29 @@ let cardAlterar
 let modal = document.getElementById('modal');
 let closeBtn = document.getElementsByClassName('close')[0];
 let confirmarBtn = document.getElementById('confirmar-btn');
+const fileSpan = document.getElementById('file-span');
+const menu = document.getElementById('menu');
+
+fileSpan.addEventListener('click', function(event) {
+    const rect = fileSpan.getBoundingClientRect();
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    menu.style.left = rect.left + 'px';
+    menu.style.bottom = (window.innerHeight - rect.top) + 'px';
+});
+
+document.addEventListener('click', function(event) {
+    if (event.target !== fileSpan && !menu.contains(event.target)) {
+        menu.style.display = 'none';
+    }
+});
+
+document.getElementById('option1').addEventListener('click', function() {
+    document.getElementById('file-input').click();
+});
+
+document.getElementById('option2').addEventListener('click', function() {
+    document.getElementById('file-input').click();
+});
 
 function mostrarModal() {
     modal.style.display = 'block';
@@ -433,12 +465,6 @@ function toggleTheme() {
         themeBtn.textContent = 'dark_mode'
     }
 }
-
-// Adiciona o evento de clique ao elemento 'file-span'
-document.getElementById('file-span').addEventListener('click', function() {
-    // Clica no elemento 'file-input' para abrir a caixa de diálogo de seleção de arquivo
-    document.getElementById('file-input').click();
-});
 
 // Adiciona o evento de alteração ao elemento 'file-input' para lidar com a seleção do arquivo
 document.getElementById('file-input').addEventListener('change', function(event) {

@@ -22,6 +22,28 @@ body, .message p, textarea::placeholder, .material-symbols-rounded, .message li 
     color: var(--text-color);
 }
 
+.menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1000;
+    bottom: 100%; /* Adjust this to position menu above the button */
+    left: 0;
+}
+.menu a {
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #333;
+}
+.menu a:hover {
+    background-color: #f1f1f1;
+}
+
 .light-mode{
     --text-color: #343641;
     --icon-color: #A9A9BC;
