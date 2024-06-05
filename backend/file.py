@@ -96,14 +96,13 @@ def procurar_similaridade(query):
 # Função para criar um PDF com a resposta da API
 def criar_pdf(resposta_da_api, diretorio):
 
-    resposta_da_api = remove_html_tags(resposta_da_api)
     print(resposta_da_api)
-    if len(resposta_da_api) >= 10:
-            nome_do_arquivo = resposta_da_api[:10] + '.pdf'
+    if len(resposta_da_api) >= 20:
+            nome_do_arquivo = resposta_da_api[:20] + '.pdf'
     else:
             nome_do_arquivo = resposta_da_api + '.pdf'
     
-    print(nome_do_arquivo)
+    nome_do_arquivo = remove_html_tags(nome_do_arquivo)
 
     if diretorio:
         # Verifica se o caminho é absoluto ou relativo
